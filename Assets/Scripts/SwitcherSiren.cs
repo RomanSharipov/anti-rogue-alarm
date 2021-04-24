@@ -8,39 +8,40 @@ public class SwitcherSiren : MonoBehaviour
     [SerializeField] private float _tempo;
     [SerializeField] private bool _thiefInside;
 
-    void Start()
+    private void Start()
     {
         _thiefInside = false;
     }
 
-    private void Update()
+    private IEnumerator AddVolume()
     {
-        if (_thiefInside && _siren.volume != 1)
+        while (_siren.volume < 1 && _thiefInside)
         {
-            _siren.volume = Mathf.MoveTowards(_siren.volume, 1, Time.deltaTime* _tempo);
+            _siren.volume = Mathf.MoveTowards(_siren.volume, 1, Time.deltaTime * _tempo);
+            yield return null;
         }
+    }
 
-        else if(_thiefInside == false && _siren.volume != 0)
+    private IEnumerator ReduceVolume()
+    {
+        while (_siren.volume > 0 && _thiefInside == false)
         {
             _siren.volume = Mathf.MoveTowards(_siren.volume, 0, Time.deltaTime * _tempo);
             if (_siren.volume == 0)
             {
-                _siren.Stop();
+                SwitchOff();
             }
+            yield return null;
         }
-    }
-
-    public void SwitchOn()
-    {
-        _siren.Play();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Player>(out Player player))
         {
-            SwitchOn();
             _thiefInside = true;
+            SwitchOn();
+            StartCoroutine(AddVolume());
         }
     }
 
@@ -49,6 +50,17 @@ public class SwitcherSiren : MonoBehaviour
         if (other.TryGetComponent<Player>(out Player player))
         {
             _thiefInside = false;
+            StartCoroutine(ReduceVolume());
         }
+    }
+
+    private void SwitchOn()
+    {
+        _siren.Play();
+    }
+
+    private void SwitchOff()
+    {
+        _siren.Stop();
     }
 }

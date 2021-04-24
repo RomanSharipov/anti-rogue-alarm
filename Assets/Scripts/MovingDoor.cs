@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class movingDoor : MonoBehaviour
+public class MovingDoor : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator _animator;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,11 +18,11 @@ public class movingDoor : MonoBehaviour
 
     private void OpenDoor()
     {
-        animator.SetBool("open",true);
+        _animator.SetBool("open",true);
     }
 
     private void CloseDoor()
     {
-        animator.SetBool("open", false);
+        _animator.SetBool("open", false);
     }
 }
