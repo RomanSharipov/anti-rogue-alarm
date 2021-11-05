@@ -42,7 +42,6 @@ public class SwitcherSiren : MonoBehaviour
             _thiefInside = true;
             SwitchOn();
             StartCoroutine(AddVolume());
-
         }
     }
 

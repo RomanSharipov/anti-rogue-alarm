@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class ArabMouseLook : MonoBehaviour
 {
-    [SerializeField] private float _sensevityX = 5f;
+    [SerializeField] private float _sensevityX = 3f;
 
     private float _mouseX;
 
